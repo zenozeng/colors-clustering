@@ -1,6 +1,3 @@
-math = new window.mathjs
-color = window.colorConvert
-
 # the exposed interface
 # config is {log: function, debug: true, maxWidth: 50, maxHeight: 50, src: imageurl}
 clustering = (config, callback) ->
@@ -36,7 +33,7 @@ clustering = (config, callback) ->
     callback?(calcClusters(pixels, config))
   img.src = config.src
 
-calcDistance = (lab1, lab2) ->
+calcDistance = (lab1, lab2) -> CIDE2000 lab1, lab2
 calcCenter = (labs) ->
 
 # pixels should be [[r, g, b], ...]
