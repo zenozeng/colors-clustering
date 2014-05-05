@@ -36,6 +36,17 @@ clustering = (config, callback) ->
 calcDistance = (lab1, lab2) -> CIDE2000 lab1, lab2
 calcCenter = (labs) ->
 
+  # 由于 CIEDE2000 算法只是对 l^2 + a^2 + b^2 下降做了一个系数修正
+  # 所以显然，就像 z = x^2 + y^2，图像只有一个极值
+  # 所以此处我们可以用最速下降法
+  # Great thanks to Xero
+
+  calcScore = (guess) ->
+    score = 0
+    labs.forEach (lab) ->
+      score += Math.pow(calcDistance(lab, guess), 2)
+    score * -1
+
 # pixels should be [[r, g, b], ...]
 calcClusters = (pixels, config) ->
   # convert to lab

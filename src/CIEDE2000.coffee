@@ -2,6 +2,7 @@
 # see also: http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf
 
 CIDE2000 = (lab1, lab2) ->
+
   # default parametric factors
   # see also: http://www.ece.rochester.edu/~gsharma/ciede2000/dataNprograms/deltaE2000.m
   kL = 1
