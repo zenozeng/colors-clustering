@@ -1,3 +1,6 @@
+mathjs = require 'mathjs'
+math = mathjs()
+
 # see also: http://en.wikipedia.org/wiki/Color_difference
 # see also: http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf
 

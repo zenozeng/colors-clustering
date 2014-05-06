@@ -1,3 +1,7 @@
+color = require("color-convert")()
+CIEDE2000 = require("CIEDE2000.coffee")
+seeds = require("seeds.coffee")
+
 # the exposed interface
 # config is {log: function, debug: true, maxWidth: 50, maxHeight: 50, src: imageurl}
 clustering = (config, callback) ->
@@ -33,7 +37,7 @@ clustering = (config, callback) ->
     callback?(calcClusters(pixels, config))
   img.src = config.src
 
-calcDistance = (lab1, lab2) -> CIDE2000 lab1, lab2
+calcDistance = (lab1, lab2) -> CIEDE2000 lab1, lab2
 calcCenter = (labs) ->
 
   # 由于 CIEDE2000 算法只是对 l^2 + a^2 + b^2 下降做了一个系数修正
