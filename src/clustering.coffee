@@ -1,29 +1,34 @@
 color = require("color-convert")
-CIEDE2000 = require("./CIEDE2000.coffee")
+calcDistance = require("./CIE67.coffee")
 seeds = require("./seeds.coffee")
 
-calcDistance = (lab1, lab2) -> CIEDE2000 lab1, lab2
 calcCenter = (labs) ->
 
-  calcScore = (guess) ->
+  calcDistanceSum = (guess) ->
     score = 0
     labs.forEach (lab) ->
       score += Math.pow(calcDistance(lab, guess), 2)
-    score * -1
+    score
 
-  minScore = 0
+  minDistance = null
   newCenter = null
 
   for lab in labs
-    score = calcScore(lab)
-    if score < minScore
-      minScore = score
+    d = calcDistanceSum(lab)
+    if (!newCenter?) or (d > minDistance)
+      minDistance = d
       newCenter = lab
 
   newCenter
 
-# pixels should be [[r, g, b], ...]
+# pixels should be [[r, g, b, a], ...]
 calcClusters = (pixels, config) ->
+  start = (new Date()).getTime()
+  log = (msg) ->
+    end = (new Date()).getTime()
+    console.log msg
+    console.log "#{(end - start)}ms cost."
+    start = end
   # convert to lab
   pixels = pixels.map (rgba) ->
     [r, g, b, a] = rgba
@@ -40,7 +45,6 @@ calcClusters = (pixels, config) ->
     clusters = []
     for i in [0...centers.length]
       clusters[i] = []
-    # Distribute pixels
     for pixel in pixels
       # distribute current pixel to closest cluster
       minIndex = null
@@ -51,16 +55,20 @@ calcClusters = (pixels, config) ->
           minIndex = index
           minDistance = d
       clusters[minIndex].push pixel
-    # Remove clusters having no pixels
     clusters = clusters.filter (clusterPixels) -> clusterPixels.length > 0
-    # Recalc centers
+    console.log clusters
     centers = clusters.map (clusterPixels) -> calcCenter clusterPixels
-    # Use random pixel as new center if clusters are not enough
-    while centers.length < config.count
-      centers.push pixels[parseInt(Math.random() * pixels.length)]
+    # log "Recalc centers, DONE"
+    # while centers.length < config.count
+    #   centers.push pixels[parseInt(Math.random() * pixels.length)]
+    # log "Use random pixel as new center if clusters are not enough, DONE"
   iter()
   # iter()
   # iter()
-  centers.map (lab) -> color.lab2rgb(lab)
+  console.log "final"
+  console.log centers
+  centers.map (lab) ->
+    console.log lab
+    color.lab2rgb(lab)
 
 module.exports = calcClusters
