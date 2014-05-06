@@ -23,12 +23,6 @@ calcCenter = (labs) ->
 
 # pixels should be [[r, g, b, a], ...]
 calcClusters = (pixels, config) ->
-  start = (new Date()).getTime()
-  log = (msg) ->
-    end = (new Date()).getTime()
-    console.log msg
-    console.log "#{(end - start)}ms cost."
-    start = end
   # convert to lab
   pixels = pixels.map (rgba) ->
     [r, g, b, a] = rgba
@@ -55,13 +49,13 @@ calcClusters = (pixels, config) ->
           minIndex = index
           minDistance = d
       clusters[minIndex].push pixel
+    # remove empty clusters
     clusters = clusters.filter (clusterPixels) -> clusterPixels.length > 0
-    console.log clusters
+    # re calc centers
     centers = clusters.map (clusterPixels) -> calcCenter clusterPixels
-    # log "Recalc centers, DONE"
-    # while centers.length < config.count
-    #   centers.push pixels[parseInt(Math.random() * pixels.length)]
-    # log "Use random pixel as new center if clusters are not enough, DONE"
+    # Use random pixel as new center if clusters are not enough, DONE
+    while centers.length < config.count
+      centers.push pixels[parseInt(Math.random() * pixels.length)]
   iter()
   # iter()
   # iter()

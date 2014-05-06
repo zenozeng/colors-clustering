@@ -3,37 +3,31 @@
     <meta charset="UTF-8">
     <title>Colors Project</title>
     <style>
-     body {
-         padding: 4em;
+     body, html {
+         padding: 0;
+         margin: 0;
          color: #555;
      }
      #image {
-         float: left;
-         width: calc(100% - 424px);
+         width: 100%;
          height: 400px;
          margin-right: 20px;
          line-height: 400px;
          text-align: center;
-         border: 1px solid #ccc;
+         border-bottom: 30px solid #eee;
          background-position: center center;
          background-size: cover;
-     }
-     #colors {
-         float: left;
-         border: 1px solid #ccc;
-         width: 400px;
-         text-align: center;
-         line-height: 400px;
-         height: 400px;
      }
      #colors h2 {
          width: 400px;
          text-align: center;
      }
      .color {
-         float: left;
-         width: 100px;
-         height: 100px;
+        display: inline-block;
+        width: 3vw;
+        height: 3vw;
+        margin: 1vw;
+        border: 1px solid #ccc;
      }
     </style>
 </head>
@@ -76,7 +70,7 @@
          box.ondrop = function(event) {
              var file, reader;
              box.innerHTML = "";
-             document.getElementById("colors").innerHTML = "Calculating...";
+             document.getElementById("colors").innerHTML = "";
              event.preventDefault();
              file = event.dataTransfer.files[0];
              reader = new FileReader;
