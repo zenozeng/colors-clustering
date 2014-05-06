@@ -1,6 +1,6 @@
 # Colors Clustering
 
-Colors clustering based on K-means algorithm & CIE76
+Colors clustering based on K-means algorithm & CIE76.  
 The seeds are extended color keywords from 
 CSS Color Module Level 3 (W3C Recommendation 07 June 2011).
 
