@@ -72,21 +72,16 @@
          };
 
          box.ondrop = function(event) {
-             var file, reader;
+             var file, url;
              box.innerHTML = "";
              document.getElementById("colors").innerHTML = "";
              event.preventDefault();
+             url = URL.createObjectURL(event.dataTransfer.files[0]);
              file = event.dataTransfer.files[0];
-             reader = new FileReader;
-             reader.onload = function(event) {
-                 var dataURL;
-                 dataURL = event.target.result;
-                 window.colorsClustering({src: dataURL, debug: true, log: log}, function(centers) {
-                     // do sth here
-                 });
-                 return box.style.backgroundImage = "url(" + dataURL + ")";
-             };
-             reader.readAsDataURL(file);
+             window.colorsClustering({src: url, debug: true, log: log}, function(centers) {
+                 // dot sth here
+             });
+             box.style.backgroundImage = "url(" + url + ")";
          };
 
      }).call(this);
