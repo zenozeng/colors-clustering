@@ -28,7 +28,7 @@ clustering = (config, callback) ->
     pixels = []
     i = 0
     while( i < imgData.data.length )
-      pixels.push [imgData.data[i], imgData.data[i+1], imgData.data[i+2]]
+      pixels.push [imgData.data[i], imgData.data[i+1], imgData.data[i+2],imgData.data[i+3]]
       i += 4
     callback?(calcClusters(pixels, config))
   img.src = config.src
@@ -47,10 +47,19 @@ calcCenter = (labs) ->
       score += Math.pow(calcDistance(lab, guess), 2)
     score * -1
 
+  # get 空间平均数
+  # 在此基础修改分量，若 +1 增大，则继续 +1, 若 +1 减小，则 -1，若方向不一致则停止
+
 # pixels should be [[r, g, b], ...]
 calcClusters = (pixels, config) ->
   # convert to lab
-  pixels = pixels.map (rgb) -> color.rgb2lab(rgb)
+  pixels = pixels.map (rgba) ->
+    [r, g, b, a] = rgba
+    rgb = [r, g, b]
+    if a isnt 255
+      a /= 255
+      rgb = rgb.map (elem) -> 255 * (1 - a) + elem * a
+    color.rgb2lab(rgb)
   # init seeds
   centers = seeds.map (rgb) -> color.rgb2lab(rgb)
   # define iter
