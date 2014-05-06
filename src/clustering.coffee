@@ -1,5 +1,5 @@
 color = require("color-convert")
-calcDistance = require("./CIE67.coffee")
+calcDistance = require("./CIE76.coffee")
 seeds = require("./seeds.coffee")
 
 calcCenter = (labs) ->
