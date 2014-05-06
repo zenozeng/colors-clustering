@@ -152,3 +152,4 @@ seeds = """240,248,255
 154,205,50"""
 
 seeds = seeds.split("\n").map (line) -> line.split(",")
+module.exports = seeds

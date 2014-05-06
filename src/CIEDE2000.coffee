@@ -1,10 +1,9 @@
-mathjs = require 'mathjs'
-math = mathjs()
+math = require('mathjs')()
 
 # see also: http://en.wikipedia.org/wiki/Color_difference
 # see also: http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf
 
-CIDE2000 = (lab1, lab2) ->
+CIEDE2000 = (lab1, lab2) ->
 
   # default parametric factors
   # see also: http://www.ece.rochester.edu/~gsharma/ciede2000/dataNprograms/deltaE2000.m
@@ -50,3 +49,5 @@ CIDE2000 = (lab1, lab2) ->
   deltaE += Math.pow((deltaH / (kH * SH)), 2)
   deltaE += RT * deltaC * deltaH / (kC * SC * kH * SH)
   deltaE = Math.sqrt(deltaE)
+
+module.exports = CIEDE2000

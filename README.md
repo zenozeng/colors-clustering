@@ -12,6 +12,13 @@ Still coding.
 
 - [color-convert](https://github.com/harthur/color-convert)
 
+## Dev Requirements
+
+```
+npm install browserify
+npm install coffeeify
+```
+
 ## Usage
 
 TODO
