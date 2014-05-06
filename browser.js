@@ -727,7 +727,7 @@ var calcClusters, clustering;
 calcClusters = require("./clustering.coffee");
 
 clustering = function(config, callback) {
-  var defaultConfig, img, k, v;
+  var defaultConfig, img, k, timeImgStart, v;
   defaultConfig = {
     debug: false,
     maxWidth: 30,
@@ -740,8 +740,13 @@ clustering = function(config, callback) {
   }
   config = defaultConfig;
   img = new Image;
+  timeImgStart = (new Date()).getTime();
   img.onload = function() {
-    var canvas, ctx, height, i, image, imgData, pixels, scale, width, _ref;
+    var canvas, ctx, height, i, image, imgData, pixels, scale, timeStart, width, _ref;
+    if (config.debug) {
+      console.log("load image in " + ((new Date()).getTime() - timeImgStart) + "ms");
+    }
+    timeStart = (new Date()).getTime();
     image = this;
     scale = Math.max(image.width / config.maxWidth, image.height / config.maxHeight, 1);
     _ref = [image.width, image.height].map(function(elem) {
@@ -758,6 +763,9 @@ clustering = function(config, callback) {
     while (i < imgData.data.length) {
       pixels.push([imgData.data[i], imgData.data[i + 1], imgData.data[i + 2], imgData.data[i + 3]]);
       i += 4;
+    }
+    if (config.debug) {
+      console.log("parse image in " + ((new Date()).getTime() - timeStart) + "ms");
     }
     return typeof callback === "function" ? callback(calcClusters(pixels, config)) : void 0;
   };
@@ -866,7 +874,6 @@ calcClusters = function(pixels, config) {
   iter();
   iter();
   centers = centers.map(function(lab) {
-    console.log(lab);
     return color.lab2rgb(lab);
   });
   end = (new Date()).getTime();

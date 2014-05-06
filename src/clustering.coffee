@@ -74,7 +74,6 @@ calcClusters = (pixels, config) ->
   iter()
   iter()
   centers = centers.map (lab) ->
-    console.log lab
     color.lab2rgb(lab)
   end = (new Date()).getTime()
   log("Calc #{centers.length} clusters in #{end - start}ms")

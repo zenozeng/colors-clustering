@@ -82,7 +82,7 @@
                  var dataURL;
                  dataURL = event.target.result;
                  window.colorsClustering({src: dataURL, debug: true, log: log}, function(centers) {
-                     console.log(centers);
+                     // do sth here
                  });
                  return box.style.backgroundImage = "url(" + dataURL + ")";
              };

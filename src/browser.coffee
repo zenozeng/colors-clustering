@@ -14,7 +14,11 @@ clustering = (config, callback) ->
   config = defaultConfig
 
   img = new Image
+  timeImgStart = (new Date()).getTime()
   img.onload = ->
+    if config.debug
+      console.log "load image in #{(new Date()).getTime() - timeImgStart}ms"
+    timeStart = (new Date()).getTime()
     image = this
     scale = Math.max (image.width / config.maxWidth), (image.height / config.maxHeight), 1
 
@@ -32,6 +36,8 @@ clustering = (config, callback) ->
     while( i < imgData.data.length )
       pixels.push [imgData.data[i], imgData.data[i+1], imgData.data[i+2],imgData.data[i+3]]
       i += 4
+    if config.debug
+      console.log "parse image in #{(new Date()).getTime() - timeStart}ms"
     callback?(calcClusters(pixels, config))
   img.src = config.src
 
