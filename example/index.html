@@ -18,16 +18,15 @@
          background-position: center center;
          background-size: cover;
      }
-     #colors h2 {
-         width: 400px;
-         text-align: center;
-     }
      .color {
         display: inline-block;
         width: 3vw;
         height: 3vw;
         margin: 1vw;
         border: 1px solid #ccc;
+     }
+     h2 {
+         padding-left: 1vw;
      }
     </style>
 </head>
@@ -43,6 +42,11 @@
     <script>
      (function() {
          var box, log;
+
+         log = function(title, colors) {
+             document.getElementById("colors").innerHTML += "<h2>" + title + "</h2>";
+             display(colors);
+         };
 
          display = function(colors) {
              var html;
@@ -77,8 +81,8 @@
              reader.onload = function(event) {
                  var dataURL;
                  dataURL = event.target.result;
-                 window.colorsClustering({src: dataURL, debug: false}, function(centers) {
-                     return display(centers);
+                 window.colorsClustering({src: dataURL, debug: true, log: log}, function(centers) {
+                     console.log(centers);
                  });
                  return box.style.backgroundImage = "url(" + dataURL + ")";
              };

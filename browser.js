@@ -730,8 +730,8 @@ clustering = function(config, callback) {
   var defaultConfig, img, k, v;
   defaultConfig = {
     debug: false,
-    maxWidth: 50,
-    maxHeight: 50,
+    maxWidth: 30,
+    maxHeight: 30,
     log: console.log,
     count: 16
   };
@@ -802,7 +802,18 @@ calcCenter = function(labs) {
 };
 
 calcClusters = function(pixels, config) {
-  var centers, iter;
+  var centers, end, iter, log, start;
+  start = (new Date()).getTime();
+  log = function(title, colors) {
+    if (colors == null) {
+      colors = [];
+    }
+    if (config.debug) {
+      return typeof config.log === "function" ? config.log(title, colors.map(function(lab) {
+        return color.lab2rgb(lab);
+      })) : void 0;
+    }
+  };
   pixels = pixels.map(function(rgba) {
     var a, b, g, r, rgb;
     r = rgba[0], g = rgba[1], b = rgba[2], a = rgba[3];
@@ -818,8 +829,9 @@ calcClusters = function(pixels, config) {
   centers = seeds.map(function(rgb) {
     return color.rgb2lab(rgb);
   });
+  log("Seeds", centers);
   iter = function() {
-    var clusters, i, minDistance, minIndex, pixel, _i, _j, _len, _ref, _results;
+    var clusters, i, minDistance, minIndex, pixel, _i, _j, _len, _ref;
     clusters = [];
     for (i = _i = 0, _ref = centers.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       clusters[i] = [];
@@ -844,19 +856,20 @@ calcClusters = function(pixels, config) {
     centers = clusters.map(function(clusterPixels) {
       return calcCenter(clusterPixels);
     });
-    _results = [];
     while (centers.length < config.count) {
-      _results.push(centers.push(pixels[parseInt(Math.random() * pixels.length)]));
+      centers.push(pixels[parseInt(Math.random() * pixels.length)]);
     }
-    return _results;
+    return log("New Clusters", centers);
   };
   iter();
-  console.log("final");
-  console.log(centers);
-  return centers.map(function(lab) {
+  iter();
+  iter();
+  centers = centers.map(function(lab) {
     console.log(lab);
     return color.lab2rgb(lab);
   });
+  end = (new Date()).getTime();
+  return log("Calc " + config.count + " clusters in " + (end - start) + "ms");
 };
 
 module.exports = calcClusters;

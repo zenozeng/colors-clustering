@@ -23,6 +23,13 @@ calcCenter = (labs) ->
 
 # pixels should be [[r, g, b, a], ...]
 calcClusters = (pixels, config) ->
+
+  start = (new Date()).getTime()
+
+  log = (title, colors = []) ->
+    if config.debug
+      config.log?(title, colors.map (lab) -> color.lab2rgb(lab))
+
   # convert to lab
   pixels = pixels.map (rgba) ->
     [r, g, b, a] = rgba
@@ -33,6 +40,7 @@ calcClusters = (pixels, config) ->
     color.rgb2lab(rgb)
   # init seeds
   centers = seeds.map (rgb) -> color.rgb2lab(rgb)
+  log("Seeds", centers);
   # define iter
   iter = ->
     # init clusters
@@ -56,13 +64,14 @@ calcClusters = (pixels, config) ->
     # Use random pixel as new center if clusters are not enough, DONE
     while centers.length < config.count
       centers.push pixels[parseInt(Math.random() * pixels.length)]
+    log("New Clusters", centers)
   iter()
-  # iter()
-  # iter()
-  console.log "final"
-  console.log centers
-  centers.map (lab) ->
+  iter()
+  iter()
+  centers = centers.map (lab) ->
     console.log lab
     color.lab2rgb(lab)
+  end = (new Date()).getTime()
+  log("Calc #{config.count} clusters in #{end - start}ms")
 
 module.exports = calcClusters
