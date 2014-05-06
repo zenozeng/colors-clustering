@@ -4,17 +4,22 @@ seeds = require("./seeds.coffee")
 
 calcCenter = (labs) ->
 
-  calcDistanceSum = (guess) ->
-    score = 0
-    labs.forEach (lab) ->
-      score += Math.pow(calcDistance(lab, guess), 2)
-    score
+  [L, A, B] = [0, 0, 0]
+  labs.forEach (lab) ->
+    L += lab[0]
+    A += lab[1]
+    B += lab[2]
+
+  len = labs.length
+  L /= len
+  A /= len
+  B /= len
 
   minDistance = null
   newCenter = null
 
   for lab in labs
-    d = calcDistanceSum(lab)
+    d = calcDistance [L, A, B], lab
     if (!newCenter?) or (d > minDistance)
       minDistance = d
       newCenter = lab
@@ -62,7 +67,7 @@ calcClusters = (pixels, config) ->
     # re calc centers
     centers = clusters.map (clusterPixels) -> calcCenter clusterPixels
     # Use random pixel as new center if clusters are not enough, DONE
-    while centers.length < config.count
+    while centers.length < config.minCount
       centers.push pixels[parseInt(Math.random() * pixels.length)]
     log("New Clusters", centers)
   iter()
@@ -72,6 +77,7 @@ calcClusters = (pixels, config) ->
     console.log lab
     color.lab2rgb(lab)
   end = (new Date()).getTime()
-  log("Calc #{config.count} clusters in #{end - start}ms")
+  log("Calc #{centers.length} clusters in #{end - start}ms")
+  centers
 
 module.exports = calcClusters

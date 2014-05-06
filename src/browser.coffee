@@ -8,8 +8,7 @@ clustering = (config, callback) ->
     debug: off
     maxWidth: 30
     maxHeight: 30
-    log: console.log
-    count: 16
+    minCount: 1
   for k, v of config
     defaultConfig[k] = v
   config = defaultConfig

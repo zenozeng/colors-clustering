@@ -1,7 +1,6 @@
 {
     "dependencies" :
     {
-        "mathjs" : ">=0.21.0",
         "color-convert" : "latest"
     }
 }

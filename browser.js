@@ -732,8 +732,7 @@ clustering = function(config, callback) {
     debug: false,
     maxWidth: 30,
     maxHeight: 30,
-    log: console.log,
-    count: 16
+    minCount: 1
   };
   for (k in config) {
     v = config[k];
@@ -779,20 +778,22 @@ calcDistance = require("./CIE76.coffee");
 seeds = require("./seeds.coffee");
 
 calcCenter = function(labs) {
-  var calcDistanceSum, d, lab, minDistance, newCenter, _i, _len;
-  calcDistanceSum = function(guess) {
-    var score;
-    score = 0;
-    labs.forEach(function(lab) {
-      return score += Math.pow(calcDistance(lab, guess), 2);
-    });
-    return score;
-  };
+  var A, B, L, d, lab, len, minDistance, newCenter, _i, _len, _ref;
+  _ref = [0, 0, 0], L = _ref[0], A = _ref[1], B = _ref[2];
+  labs.forEach(function(lab) {
+    L += lab[0];
+    A += lab[1];
+    return B += lab[2];
+  });
+  len = labs.length;
+  L /= len;
+  A /= len;
+  B /= len;
   minDistance = null;
   newCenter = null;
   for (_i = 0, _len = labs.length; _i < _len; _i++) {
     lab = labs[_i];
-    d = calcDistanceSum(lab);
+    d = calcDistance([L, A, B], lab);
     if ((newCenter == null) || (d > minDistance)) {
       minDistance = d;
       newCenter = lab;
@@ -856,7 +857,7 @@ calcClusters = function(pixels, config) {
     centers = clusters.map(function(clusterPixels) {
       return calcCenter(clusterPixels);
     });
-    while (centers.length < config.count) {
+    while (centers.length < config.minCount) {
       centers.push(pixels[parseInt(Math.random() * pixels.length)]);
     }
     return log("New Clusters", centers);
@@ -869,7 +870,8 @@ calcClusters = function(pixels, config) {
     return color.lab2rgb(lab);
   });
   end = (new Date()).getTime();
-  return log("Calc " + config.count + " clusters in " + (end - start) + "ms");
+  log("Calc " + centers.length + " clusters in " + (end - start) + "ms");
+  return centers;
 };
 
 module.exports = calcClusters;
