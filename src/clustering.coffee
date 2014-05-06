@@ -1,14 +1,9 @@
-color = require("color-convert")()
+color = require("color-convert")
 CIEDE2000 = require("./CIEDE2000.coffee")
 seeds = require("./seeds.coffee")
 
 calcDistance = (lab1, lab2) -> CIEDE2000 lab1, lab2
 calcCenter = (labs) ->
-
-  # 由于 CIEDE2000 算法只是对 l^2 + a^2 + b^2 下降做了一个系数修正
-  # 所以显然，就像 z = x^2 + y^2，图像只有一个极值
-  # 所以此处我们可以用最速下降法
-  # Great thanks to Xero
 
   calcScore = (guess) ->
     score = 0
@@ -16,8 +11,16 @@ calcCenter = (labs) ->
       score += Math.pow(calcDistance(lab, guess), 2)
     score * -1
 
-  # get 空间平均数
-  # 在此基础修改分量，若 +1 增大，则继续 +1, 若 +1 减小，则 -1，若方向不一致则停止
+  minScore = 0
+  newCenter = null
+
+  for lab in labs
+    score = calcScore(lab)
+    if score < minScore
+      minScore = score
+      newCenter = lab
+
+  newCenter
 
 # pixels should be [[r, g, b], ...]
 calcClusters = (pixels, config) ->
@@ -56,8 +59,8 @@ calcClusters = (pixels, config) ->
     while centers.length < config.count
       centers.push pixels[parseInt(Math.random() * pixels.length)]
   iter()
-  iter()
-  iter()
-  centers
+  # iter()
+  # iter()
+  centers.map (lab) -> color.lab2rgb(lab)
 
 module.exports = calcClusters

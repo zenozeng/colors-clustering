@@ -3,20 +3,21 @@ calcClusters = require("./clustering.coffee")
 # the exposed interface
 # config is {log: function, debug: true, maxWidth: 50, maxHeight: 50, src: imageurl}
 clustering = (config, callback) ->
+
   defaultConfig =
     debug: off
     maxWidth: 50
     maxHeight: 50
     log: console.log
     count: 16
-  for k, v in config
+  for k, v of config
     defaultConfig[k] = v
   config = defaultConfig
 
   img = new Image
-  img.onload ->
+  img.onload = ->
     image = this
-    scale = Math.max (image.width / maxWidth), (image.height / maxHeight), 1
+    scale = Math.max (image.width / config.maxWidth), (image.height / config.maxHeight), 1
 
     [width, height] = [image.width, image.height].map (elem) -> parseInt (elem / scale)
 
@@ -35,4 +36,4 @@ clustering = (config, callback) ->
     callback?(calcClusters(pixels, config))
   img.src = config.src
 
-window.colorsClustering = clustering
+global.colorsClustering = clustering

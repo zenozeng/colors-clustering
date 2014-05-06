@@ -22325,12 +22325,13 @@ module.exports = CIEDE2000;
 
 
 },{"mathjs":3}],261:[function(require,module,exports){
+(function (global){
 var calcClusters, clustering;
 
 calcClusters = require("./clustering.coffee");
 
 clustering = function(config, callback) {
-  var defaultConfig, img, k, v, _i, _len;
+  var defaultConfig, img, k, v;
   defaultConfig = {
     debug: false,
     maxWidth: 50,
@@ -22338,16 +22339,16 @@ clustering = function(config, callback) {
     log: console.log,
     count: 16
   };
-  for (v = _i = 0, _len = config.length; _i < _len; v = ++_i) {
-    k = config[v];
+  for (k in config) {
+    v = config[k];
     defaultConfig[k] = v;
   }
   config = defaultConfig;
   img = new Image;
-  img.onload(function() {
+  img.onload = function() {
     var canvas, ctx, height, i, image, imgData, pixels, scale, width, _ref;
     image = this;
-    scale = Math.max(image.width / maxWidth, image.height / maxHeight, 1);
+    scale = Math.max(image.width / config.maxWidth, image.height / config.maxHeight, 1);
     _ref = [image.width, image.height].map(function(elem) {
       return parseInt(elem / scale);
     }), width = _ref[0], height = _ref[1];
@@ -22364,17 +22365,18 @@ clustering = function(config, callback) {
       i += 4;
     }
     return typeof callback === "function" ? callback(calcClusters(pixels, config)) : void 0;
-  });
+  };
   return img.src = config.src;
 };
 
-window.colorsClustering = clustering;
+global.colorsClustering = clustering;
 
 
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clustering.coffee":262}],262:[function(require,module,exports){
 var CIEDE2000, calcCenter, calcClusters, calcDistance, color, seeds;
 
-color = require("color-convert")();
+color = require("color-convert");
 
 CIEDE2000 = require("./CIEDE2000.coffee");
 
@@ -22385,8 +22387,8 @@ calcDistance = function(lab1, lab2) {
 };
 
 calcCenter = function(labs) {
-  var calcScore;
-  return calcScore = function(guess) {
+  var calcScore, lab, minScore, newCenter, score, _i, _len;
+  calcScore = function(guess) {
     var score;
     score = 0;
     labs.forEach(function(lab) {
@@ -22394,6 +22396,17 @@ calcCenter = function(labs) {
     });
     return score * -1;
   };
+  minScore = 0;
+  newCenter = null;
+  for (_i = 0, _len = labs.length; _i < _len; _i++) {
+    lab = labs[_i];
+    score = calcScore(lab);
+    if (score < minScore) {
+      minScore = score;
+      newCenter = lab;
+    }
+  }
+  return newCenter;
 };
 
 calcClusters = function(pixels, config) {
@@ -22446,9 +22459,9 @@ calcClusters = function(pixels, config) {
     return _results;
   };
   iter();
-  iter();
-  iter();
-  return centers;
+  return centers.map(function(lab) {
+    return color.lab2rgb(lab);
+  });
 };
 
 module.exports = calcClusters;
