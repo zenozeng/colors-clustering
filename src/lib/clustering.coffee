@@ -82,6 +82,7 @@ calcClusters = (pixels, config) ->
   end = (new Date()).getTime()
   log("Calc #{centers.length} clusters in #{end - start}ms")
   centers.map (center, i) ->
-    {color: center, weight: clusters[i].length}
+    weight = clusters[i].length / pixels.length
+    {color: center, weight: weight}
 
 module.exports = calcClusters

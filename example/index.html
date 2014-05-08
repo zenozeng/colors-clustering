@@ -79,7 +79,7 @@
              url = URL.createObjectURL(event.dataTransfer.files[0]);
              file = event.dataTransfer.files[0];
              window.colorsClustering({src: url, debug: true, log: log}, function(clusters) {
-                 console.log(clusters);
+                 console.log(JSON.stringify(clusters, 2, "  "));
              });
              box.style.backgroundImage = "url(" + url + ")";
          };

@@ -194,9 +194,11 @@
     end = (new Date()).getTime();
     log("Calc " + centers.length + " clusters in " + (end - start) + "ms");
     return centers.map(function(center, i) {
+      var weight;
+      weight = clusters[i].length / pixels.length;
       return {
         color: center,
-        weight: clusters[i].length
+        weight: weight
       };
     });
   };
