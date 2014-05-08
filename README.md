@@ -18,7 +18,7 @@ You can use
 
 ### Browser
 
-Include browser.js.
+Include browser/colors-clustering.js.
 
 ```javascript
 window.colorsClustering({src: imgSrc}, function(colors) {

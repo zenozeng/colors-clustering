@@ -1,3 +1,3 @@
-coffee -o ./ -c src/index.coffee
+coffee -o ./ -c src/*.coffee
 coffee -o ./lib/ -c src/lib/*
-browserify index.js > browser.js
+browserify browser.js > browser/colors-clustering.js

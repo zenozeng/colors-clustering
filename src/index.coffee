@@ -41,4 +41,4 @@ clustering = (config, callback) ->
     callback?(calcClusters(pixels, config))
   img.src = config.src
 
-global.colorsClustering = clustering
+module.exports = clustering

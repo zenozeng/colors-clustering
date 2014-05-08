@@ -52,6 +52,6 @@
     return img.src = config.src;
   };
 
-  global.colorsClustering = clustering;
+  module.exports = clustering;
 
 }).call(this);
