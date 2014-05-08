@@ -114,7 +114,7 @@
   };
 
   calcClusters = function(pixels, config) {
-    var centers, end, iter, log, start;
+    var centers, clusters, end, iter, log, removeEmptyClusters, start, useRandomPixels;
     start = (new Date()).getTime();
     log = function(title, colors) {
       if (colors == null) {
@@ -142,8 +142,15 @@
       return color.rgb2lab(rgb);
     });
     log("Seeds", centers);
-    iter = function() {
-      var clusters, i, minDistance, minIndex, pixel, _i, _j, _len, _ref;
+    clusters = null;
+    iter = function(removeEmptyClusters, useRandomPixels) {
+      var i, minDistance, minIndex, pixel, _i, _j, _len, _ref;
+      if (removeEmptyClusters == null) {
+        removeEmptyClusters = true;
+      }
+      if (useRandomPixels == null) {
+        useRandomPixels = true;
+      }
       clusters = [];
       for (i = _i = 0, _ref = centers.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         clusters[i] = [];
@@ -162,26 +169,36 @@
         });
         clusters[minIndex].push(pixel);
       }
-      clusters = clusters.filter(function(clusterPixels) {
-        return clusterPixels.length > 0;
-      });
+      if (removeEmptyClusters) {
+        clusters = clusters.filter(function(clusterPixels) {
+          return clusterPixels.length > 0;
+        });
+      }
       centers = clusters.map(function(clusterPixels) {
         return calcCenter(clusterPixels);
       });
-      while (centers.length < config.minCount) {
-        centers.push(pixels[parseInt(Math.random() * pixels.length)]);
+      if (useRandomPixels) {
+        while (centers.length < config.minCount) {
+          centers.push(pixels[parseInt(Math.random() * pixels.length)]);
+        }
       }
       return log("New Clusters", centers);
     };
     iter();
     iter();
     iter();
+    iter(removeEmptyClusters = false, useRandomPixels = false);
     centers = centers.map(function(lab) {
       return color.lab2rgb(lab);
     });
     end = (new Date()).getTime();
     log("Calc " + centers.length + " clusters in " + (end - start) + "ms");
-    return centers;
+    return centers.map(function(center, i) {
+      return {
+        color: center,
+        weight: clusters[i].length
+      };
+    });
   };
 
   module.exports = calcClusters;

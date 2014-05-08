@@ -47,7 +47,8 @@ calcClusters = (pixels, config) ->
   centers = seeds.map (rgb) -> color.rgb2lab(rgb)
   log("Seeds", centers);
   # define iter
-  iter = ->
+  clusters = null
+  iter = (removeEmptyClusters = true, useRandomPixels = true) ->
     # init clusters
     clusters = []
     for i in [0...centers.length]
@@ -63,20 +64,24 @@ calcClusters = (pixels, config) ->
           minDistance = d
       clusters[minIndex].push pixel
     # remove empty clusters
-    clusters = clusters.filter (clusterPixels) -> clusterPixels.length > 0
+    if removeEmptyClusters
+      clusters = clusters.filter (clusterPixels) -> clusterPixels.length > 0
     # re calc centers
     centers = clusters.map (clusterPixels) -> calcCenter clusterPixels
     # Use random pixel as new center if clusters are not enough, DONE
-    while centers.length < config.minCount
-      centers.push pixels[parseInt(Math.random() * pixels.length)]
+    if useRandomPixels
+      while centers.length < config.minCount
+        centers.push pixels[parseInt(Math.random() * pixels.length)]
     log("New Clusters", centers)
   iter()
   iter()
   iter()
+  iter(removeEmptyClusters = false, useRandomPixels = false)
   centers = centers.map (lab) ->
     color.lab2rgb(lab)
   end = (new Date()).getTime()
   log("Calc #{centers.length} clusters in #{end - start}ms")
-  centers
+  centers.map (center, i) ->
+    {color: center, weight: clusters[i].length}
 
 module.exports = calcClusters

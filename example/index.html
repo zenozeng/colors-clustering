@@ -78,8 +78,8 @@
              event.preventDefault();
              url = URL.createObjectURL(event.dataTransfer.files[0]);
              file = event.dataTransfer.files[0];
-             window.colorsClustering({src: url, debug: true, log: log}, function(centers) {
-                 // dot sth here
+             window.colorsClustering({src: url, debug: true, log: log}, function(clusters) {
+                 console.log(clusters);
              });
              box.style.backgroundImage = "url(" + url + ")";
          };
