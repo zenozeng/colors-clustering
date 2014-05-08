@@ -1,7 +1,21 @@
 {
-    "dependencies" :
-    {
-        "color-convert" : "latest",
-        "canvas-browserify" : ">=1.1.1"
+    "name": "colors-clustering",
+    "version": "0.1.0",
+    "keywords": ["color", "k-means", "clustering", "lab", "CIE67"],
+    "description": "Colors clustering based on K-means algorithm & CIE76.  The seeds are extended color keywords from CSS Color Module Level 3 (W3C Recommendation 07 June 2011).",
+    "homepage" : "https://github.com/zenozeng/colors-clustering",
+    "bugs": {
+        "url": "https://github.com/zenozeng/colors-clustering/issues",
+        "email": "zenoofzeng@gmail.com"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Zeno Zeng",
+        "email": "zenoofzeng@gmail.com",
+        "url": "https://zenozeng.com"
+    },
+    "dependencies": {
+        "color-convert": "latest",
+        "canvas-browserify": ">=1.1.1"
     }
 }

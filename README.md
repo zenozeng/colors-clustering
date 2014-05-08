@@ -6,9 +6,19 @@ CSS Color Module Level 3 (W3C Recommendation 07 June 2011).
 
 ## Usage
 
+### Get img src
+
+You can use
+
+- Url
+
+- Data Url
+
+- URL.createObjectURL(FileObj)
+
 ### Browser
 
-```
+```javascript
 window.colorsClustering({src: imgSrc}, function(colors) {
     // do sth here
 });
@@ -16,9 +26,37 @@ window.colorsClustering({src: imgSrc}, function(colors) {
 
 see also: example/index.html
 
-### NodeJS
+### NodeJS or Browserify
 
-TODO
+```javascript
+var colorsClustering = require("colors-clustering");
+colorsClustering({src: imgSrc}, function(colors) {
+    // do sth here
+});
+```
+
+### Config
+
+```javascript
+var config = {
+    debug: true,
+    log: function(msg, colors) {
+        console.log(msg);
+        colors.map(function(rgb) {
+            console.log(rgb);
+        });
+    },
+    maxWidth: 30,
+    maxHeight: 30,
+    minCount: 1,
+    src: imgSrc
+};
+colorsClustering(config, callback);
+```
+
+The image will be resized based on maxWidth and maxHeight.
+And the number of output colors will be always >= minCount.
+If debug is on, the log will be called.
 
 ### Example Output
 
