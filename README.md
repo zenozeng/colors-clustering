@@ -18,6 +18,8 @@ You can use
 
 ### Browser
 
+Include browser.js.
+
 ```javascript
 window.colorsClustering({src: imgSrc}, function(colors) {
     // do sth here

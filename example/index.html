@@ -19,11 +19,11 @@
          background-size: cover;
      }
      .color {
-        display: inline-block;
-        width: 3vw;
-        height: 3vw;
-        margin: 1vw;
-        border: 1px solid #ccc;
+         display: inline-block;
+         width: 3vw;
+         height: 3vw;
+         margin: 1vw;
+         border: 1px solid #ccc;
      }
      h2 {
          padding-left: 1vw;
@@ -76,12 +76,14 @@
              box.innerHTML = "";
              document.getElementById("colors").innerHTML = "";
              event.preventDefault();
-             url = URL.createObjectURL(event.dataTransfer.files[0]);
-             file = event.dataTransfer.files[0];
-             window.colorsClustering({src: url, debug: true, log: log}, function(clusters) {
-                 console.log(JSON.stringify(clusters, 2, "  "));
-             });
-             box.style.backgroundImage = "url(" + url + ")";
+             if(event.dataTransfer.files.length > 0) {
+                 url = URL.createObjectURL(event.dataTransfer.files[0]);
+                 file = event.dataTransfer.files[0];
+                 window.colorsClustering({src: url, debug: true, log: log}, function(clusters) {
+                     console.log(JSON.stringify(clusters, 2, "  "));
+                 });
+                 box.style.backgroundImage = "url(" + url + ")";
+             }
          };
 
      }).call(this);
