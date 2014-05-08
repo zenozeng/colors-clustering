@@ -36,5 +36,5 @@ Using CIEDE2000 is unbearable time-consuming.
 
 ### Is canvas(node) an optionalDependencie?
 
-Yes, it is. If only want to use this package in browser, 
+Yes, it is. If you only want to use this package in browser, 
 it doesn't matter if you fail to npm install canvas.

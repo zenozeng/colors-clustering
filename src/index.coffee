@@ -1,4 +1,4 @@
-calcClusters = require("./clustering.coffee")
+calcClusters = require("./lib/clustering.js")
 Canvas = require("canvas-browserify")
 Image = Canvas.Image
 
