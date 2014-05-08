@@ -29,6 +29,8 @@ TODO
 
 ### Example Output
 
+Note: Color is [r, g, b], and the weight depends on the size of cluster.
+
 ```json
 [
   {
