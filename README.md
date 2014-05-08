@@ -28,6 +28,10 @@ see also: example/index.html
 
 ### NodeJS or Browserify
 
+```
+npm install colors-clustering
+```
+
 ```javascript
 var colorsClustering = require("colors-clustering");
 colorsClustering({src: imgSrc}, function(colors) {
