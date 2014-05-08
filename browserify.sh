@@ -1,1 +1,1 @@
-browserify -t coffeeify src/browser.coffee > browser.js
+browserify -t coffeeify src/index.coffee > browser.js

@@ -1,4 +1,6 @@
 calcClusters = require("./clustering.coffee")
+Canvas = require("canvas-browserify")
+Image = Canvas.Image
 
 # the exposed interface
 # config is {log: function, debug: true, maxWidth: 50, maxHeight: 50, src: imageurl}
@@ -24,9 +26,7 @@ clustering = (config, callback) ->
 
     [width, height] = [image.width, image.height].map (elem) -> parseInt (elem / scale)
 
-    canvas = document.createElement("canvas");
-    canvas.width = width
-    canvas.height = height
+    canvas = new Canvas(width, height)
     ctx = canvas.getContext "2d"
     ctx.drawImage this, 0, 0, image.width, image.height, 0, 0, width, height
 

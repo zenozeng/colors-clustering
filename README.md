@@ -13,6 +13,8 @@ npm install coffeeify
 
 ## Usage
 
+### Browser
+
 ```
 window.colorsClustering({src: imgSrc}, function(colors) {
     // do sth here
@@ -21,9 +23,18 @@ window.colorsClustering({src: imgSrc}, function(colors) {
 
 see also: example/index.html
 
+### NodeJS
+
+TODO
+
 ## FAQ
 
 ### Why not CIEDE2000
 
 For performance issues.
 Using CIEDE2000 is unbearable time-consuming.
+
+### Is canvas(node) an optionalDependencie?
+
+Yes, it is. If only want to use this package in browser, 
+it doesn't matter if you fail to npm install canvas.
