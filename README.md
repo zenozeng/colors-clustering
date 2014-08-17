@@ -4,6 +4,8 @@ Colors clustering based on K-means algorithm & CIE76.
 The seeds are extended color keywords from 
 CSS Color Module Level 3 (W3C Recommendation 07 June 2011).
 
+Visualization Demo in D3: https://github.com/zenozeng/colors-clustering-visualization
+
 ## Usage
 
 ### Get img src
